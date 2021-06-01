@@ -17,11 +17,11 @@ insert into  PERSON values(4444, 'GOPAL', 'WHITEFIELD');
 insert into  PERSON values(5555, 'LATHA', 'VIJAYANAGAR');
 select * from PERSON;
 
-insert into  car values('KA04Q2301', 'MARUTHI-DX' ,'2000-01-01');
-insert into  car values('KA05P1000', 'FORDICON', '2000-02-23');
-insert into car values('KA03L1234','ZEN-VXI', '1999-03-19');
-insert into  car values('KA03L9999', 'MARUTH-DX', '2002-05-09');
-insert into  car values('KA01P4020', 'INDICA-VX ', '2002-04-02');
+insert into  car values('AP07Q2301', 'MARUTHI-DX' ,'2000-01-01');
+insert into  car values('AP07P1000', 'FORDICON', '2000-02-23');
+insert into car values('AP071234','ZEN-VXI', '1999-03-19');
+insert into  car values('AP07L9999', 'MARUTH-DX', '2002-05-09');
+insert into  car values('AP07P4020', 'INDICA-VX ', '2002-04-02');
 select * from car;
 
 show tables;
@@ -32,32 +32,27 @@ insert into Accident values (300,'23-07-09', ' M G ROAD');
 insert into Accident values (25000, '11-06-01', ' RESIDENCY ROAD'); 
 insert into Accident values (26500, '16-09-01', ' RICHMOND ROAD');
 
-insert into owns values(1111,'KA04Q2301');
-insert into owns values(1111,'KA05P1000');
-insert into owns values(2222,'KA03L1234');
-insert into owns values(3333,'KA03L9999');
-insert into owns values(4444,'KA01P4020');
+insert into owns values(1111,'AP07Q2301');
+insert into owns values(1111,'AP07P1000');
+insert into owns values(2222,'AP07L1234');
+insert into owns values(3333,'AP07L9999');
+insert into owns values(4444,'AP07P4020');
 
-insert into participated values(1111, 'KA04Q2301' ,12 ,20000);
-insert into participated values(2222, 'KA03L1234' ,200 ,500);
-insert into participated values(3333, 'KA03L9999' ,300 ,10000);
-insert into participated values(4444, 'KA01P4020' ,25000 ,2375);
-insert into participated values(1111, 'KA05P1000' ,26500, 70000);
+insert into participated values(111, 'AP07Q2301' ,12 ,20000);
+insert into participated values(2222, 'AP07L1234' ,200 ,500);
+insert into participated values(3333, 'AP07L9999' ,300 ,10000);
+insert into participated values(4444, 'AP07P4020' ,25000 ,2375);
+insert into participated values(1111, 'AP07P1000' ,26500, 70000);
 
-UPDATE PARTICIPATED
-SET DAMAGE_AMT=25000
-WHERE REPORT_NO =12 AND REGNO="KA04Q2301";
+select * from participated;
 
-SELECT COUNT(*) FROM ACCIDENT
-WHERE ADATE LIKE "2001-06-02";
+/* Question 1 where damage amount is updated when given report number*/
+update participated set damage_amt=25000 where report_no=12; 
+
+/* Question 2 return count of accidents that occured in 2008*/
+select count(report_no) from accident where YEAR(adate) = 2008;
+
+/* Question 3 return the count of models that were in an accident given the model*/
+select count(Model) from car where Model='Tata Safari';
 
 
-SELECT count(A.REPORT_NO)
-FROM ACCIDENT A, PARTICIPATED P, CAR C
-WHERE A.REPORT_NO=P.REPORT_NO
-AND
-P.REGNO=C.REGNO
-AND
-C.MODEL="MARUTHI-DX";
-
-commit;
