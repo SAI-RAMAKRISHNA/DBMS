@@ -1,4 +1,7 @@
-CREATE TABLE PERSON (DRIVER_ID VARCHAR(10),NAME VARCHAR(20),ADDRESS VARCHAR(15),PRIMARY KEY(DRIVER_ID));
+create database Insurance;
+use Insurance;
+
+create table PERSON (DRIVER_ID VARCHAR(10),NAME VARCHAR(20),ADDRESS VARCHAR(15),PRIMARY KEY(DRIVER_ID));
 create table car(regno varchar(10),Model varchar(20),Year date,Primary key(Regno));
 create table Accident(report_no int,ADATE DATE,Location varchar(15),Primary key(report_no));
 create table owns(driver_id varchar(10),regno varchar(10),primary key(driver_id,regno),foreign key(driver_id) references person(driver_id) on delete cascade,
