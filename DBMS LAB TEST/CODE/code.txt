@@ -1,0 +1,96 @@
+create database Bank_Database;
+use Bank_Database;
+
+create table branch(branch_name varchar(30), branch_city varchar(30), assets real, primary key(branch_name));
+create table accounts(accno int, branch_name varchar(30), balance real, primary key(accno), foreign key(branch_name) 
+references branch(branch_name) on delete cascade);
+create table customer(customer_name varchar(30), customer_street varchar(30), city varchar(30), primary key(customer_name));
+create table depositor(customer_name varchar(30), accno int, primary key(customer_name, accno), 
+foreign key(customer_name) references customer(customer_name) on update cascade, foreign key(accno) references accounts(accno) on delete cascade);
+create table loan(loan_number int, branch_name varchar(30), amount real, primary key(loan_number), 
+foreign key(branch_name) references branch(branch_name) on delete cascade);
+create table borrower(customer_name varchar(30), loan_number int, primary key(customer_name, loan_number),
+foreign key(customer_name) references customer(customer_name) on update cascade, foreign key(loan_number) references loan(loan_number) on delete cascade);
+show tables;
+
+
+insert into branch values("SBI Rajamundry", "Chagallu", 500000);
+insert into branch values("SBI MG Road", "Vijayawada", 100000);
+insert into branch values("SBI ZP Road", "Tadepalligudem", 200000);
+insert into branch values("SBI Dolphin Road", "Nallajerla", 100000);
+insert into branch values("SBI Buds Road", "Tadepalligudem", 300000);
+
+select * from branch;
+
+insert into accounts values(1, "SBI Rajamundry", 25000);
+insert into accounts values(2, "SBI MG Road", 55000);
+insert into accounts values(3, "SBI ZP Road", 70000);
+insert into accounts values(4, "SBI Dolphin Road", 80000);
+insert into accounts values(5, "SBI Buds Road", 86000);
+insert into accounts values(6, "SBI ZP Road", 40000);
+insert into accounts values(7, "SBI MG Road", 50000);
+insert into accounts values(8, "SBI Dolphin Road", 40000);
+insert into accounts values(9, "SBI Rajamundry", 64000);
+insert into accounts values(10, "SBI Buds Road", 70500);
+insert into accounts values(11, "SBI Dolphin Road", 20000);
+insert into accounts values(12, "SBI ZP Road", 35000);
+
+select * from accounts;
+
+insert into customer values("SAI", "MAIN ROAD", "Chagallu");
+insert into customer values("RAMA", "MG ROAD", "Vijayawada");
+insert into customer values("KRISHNA", "HIGH SCHOOL ROAD", "Tadepalligudem");
+insert into customer values("GUDAPATI", "TEMPLE ROAD", "Nallajerla");
+insert into customer values("SHIVA", "FACTORY ROAD", "Tadepalligudem");
+
+select * from customer;
+
+insert into loan values(1, "SBI Rajamundry", 10000);
+insert into loan values(2, "SBI MG Road", 20000);
+insert into loan values(3, "SBI ZP Road", 25000);
+insert into loan values(4, "SBI Dolphin Road", 35000);
+insert into loan values(5, "SBI Buds Road", 40000);
+
+select * from loan;
+
+insert into borrower values("SAI", 1);
+insert into borrower values("RAMA", 2);
+insert into borrower values("KRISHNA", 3);
+insert into borrower values("GUDAPATI", 4);
+insert into borrower values("SHIVA", 5);
+
+select * from borrower;
+
+insert into depositor values("SAI", 1);
+insert into depositor values("RAMA", 2);
+insert into depositor values("KRISHNA", 3);
+insert into depositor values("SAI", 4);
+insert into depositor values("SHIVA", 5);
+insert into depositor values("GUDAPATI", 6);
+insert into depositor values("RAMA", 7);
+insert into depositor values("SAI", 8);
+insert into depositor values("KRISHNA", 9);
+insert into depositor values("SHIVA", 10);
+insert into depositor values("GUDAPATI", 11);
+select * from depositor;
+
+/* Query 3 */
+
+select customer_name from depositor d,accounts a where d.accno=a.accno and a.branch_name ="SBI Rajamundry" group by customer_name having count(d.customer_name)>=2;
+
+/* Query 4 */
+select d.customer_name from accounts a, branch b, depositor d where b.branch_name=a.branch_name and a.accno=d.accno and b.branch_city="Tadepalligudem" 
+group by d.customer_name having count(distinct b.branch_name)=(select count(branch_name) from branch where branch_city="Tadepalligudem");
+
+/* Query 5 */
+
+delete from accounts where branch_name in(select branch_name from branch where branch_city="Tadepalligudem");
+
+/*Query 6 */
+
+alter table accounts 
+add account_type varchar(50);
+
+/* Query 7 */
+
+select customer_name,customer_street,city from customer where customer_name in(select customer_name from borrower where loan_number in (select loan_number from loan having avg(amount)>20000));
