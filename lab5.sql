@@ -1,5 +1,5 @@
-create database stuEnrollement;
-use stuEnrollement;
+create database StudentEnrollement;
+use StudentEnrollement;
 
 
 
